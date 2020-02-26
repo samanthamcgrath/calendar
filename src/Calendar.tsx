@@ -89,7 +89,7 @@ class MonthCalendar extends React.Component {
   }
 
   renderMonth(month: Month): JSX.Element[] {
-    return Array.from(month.getDaysInMonth()).map(d => this.renderDay(d));
+    return Array.from(month.getDaysInMonth(), d => this.renderDay(d));
   }
 
   render() {
