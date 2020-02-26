@@ -1,6 +1,6 @@
 const monthNames = ["January","February","March","April","May","June","July",
                     "August","September","October","November","December"];
-const dayNames = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+export const dayNames = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
 
 class Year {
   number: number;
@@ -28,13 +28,39 @@ export class Month {
     return daysInMonth;
   }
 
-  *getDaysInMonth() {
-    for (let i = 1; i <= this.numberOfDaysInMonth(); i++) {
+  *getDaysInMonth(start: number, end: number) {
+    for (let i = start; i <= end; i++) {
       let day = new FullDate(i, this.index, this.year.number);
       yield day;
     }
   }
 
+  getRelativeMonth(offset: number): Month {
+    let newMonth;
+
+    if(offset === 1) { //next month
+      if(this.index === 12) {
+        // if December then year increments as well as month
+        newMonth = new Month(1, new Year(this.year.number + 1));
+      } else {
+        newMonth = new Month(this.index + 1, new Year(this.year.number));
+      }
+    } else {
+      if(this.index === 1) { //prev month
+        // if January then year decrements as well as month
+        newMonth = new Month(12, new Year(this.year.number - 1));
+      } else {
+        newMonth = new Month(this.index - 1, new Year(this.year.number));
+      }
+    }
+    return newMonth;
+  }
+
+  getFirstDayOfMonth() {
+    let firstDayOfMonth = new Date(this.year.number,this.index-1,1);
+    console.log("first day of month " + (firstDayOfMonth.getDay()));
+    return firstDayOfMonth.getDay(); 
+  }
 }
 
 export class FullDate {

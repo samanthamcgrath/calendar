@@ -1,0 +1,52 @@
+.calendar {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+}
+
+.date-picker {
+    display: flex;
+}
+
+.month-picker, .year-picker {
+    float: left;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+
+.month-picker {
+    background-color: peru;
+}
+
+.year-picker {
+    background-color: royalblue;
+}
+
+.current-year, .current-month {
+    padding: 10px;
+}
+
+.days {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.day-button {
+    flex: 0 0 14%;
+    padding: 5px;
+    background-color: lightblue;
+}
+
+.day-names {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.day-names div {
+    flex: 0 0 12%;
+    padding: 5px;
+    background-color: palegoldenrod;
+}
