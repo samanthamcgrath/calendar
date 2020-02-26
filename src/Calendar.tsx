@@ -1,67 +1,8 @@
 import React from 'react';
 import './Calendar.css';
+import {FullDate, Month} from './FullDate';
 
 
-const monthNames = ["January","February","March","April","May","June","July",
-                    "August","September","October","November","December"];
-const dayNames = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
-
-class Year {
-  number: number;
-
-  constructor(number: number) {
-    this.number = number;
-  }
-}
-
-class Month {
-  index: number;
-  year: Year;
-
-  constructor(month: number, year: Year) {
-    this.index = month;
-    this.year = year;
-  }
-
-  getMonthName() {
-    return monthNames[this.index-1];
-  }
-
-  numberOfDaysInMonth() {
-    const daysInMonth = new Date(this.year.number, this.index, 0).getDate();
-    return daysInMonth;
-  }
-
-  *getDaysInMonth() {
-    for (let i = 1; i <= this.numberOfDaysInMonth(); i++) {
-      let day = new FullDate(i, this.index, this.year.number);
-      yield day;
-    }
-  }
-
-}
-
-class FullDate {
-  day: number;
-  month: Month;
-  year: Year;
-
-  constructor(...args: any[]) {
-    if(args.length === 1) {
-      if(args[0] instanceof Date) {
-        this.day = args[0].getDate();
-        this.year = new Year(args[0].getFullYear());
-        this.month = new Month(args[0].getMonth()+1,this.year);
-      } else {
-        throw new Error("argument is not of type Date");
-      }
-    } else {
-      this.day = args[0];
-      this.year = new Year(args[2]);
-      this.month = new Month(args[1],this.year);
-    }
-  }
-}
 
 class MonthPicker extends React.Component {
   render() {
@@ -71,40 +12,60 @@ class MonthPicker extends React.Component {
   }
 }
 
-interface DayProps {date: FullDate}
+interface DayProps {date: FullDate, selected: boolean, selectDay: (day: FullDate) => void}
 
 class Day extends React.Component<DayProps> {
   render() {
+    let selected: any = {};
+    if(this.props.selected) {
+      selected.backgroundColor = "red";
+    }
     return(
-      <button className="day">
+      <button className="day" style={selected} onClick={() => {this.props.selectDay(this.props.date)}}>
         {this.props.date.day}
       </button>
     );
   }
 }
 
-class MonthCalendar extends React.Component {
-  renderDay(date: FullDate): JSX.Element {
-    return <Day date={date} key={date.day} />
+interface MonthProps {
+  selectedDate: FullDate, selectDay: (day: FullDate) => void
+}
+
+class MonthCalendar extends React.Component<MonthProps> {
+  renderDay(date: FullDate, selected: boolean): JSX.Element {
+    return <Day date={date} selected={selected} selectDay={this.props.selectDay} key={date.day} />
   }
 
-  renderMonth(month: Month): JSX.Element[] {
-    return Array.from(month.getDaysInMonth(), d => this.renderDay(d));
+  renderMonth(date: FullDate): JSX.Element[] {
+    return Array.from(date.month.getDaysInMonth(), d => this.renderDay(d,date.day===d.day));
   }
 
   render() {
-    let currentDate = new FullDate(new Date());
-    console.log(currentDate);
+
 
     return (
       <div className="days">
-        {this.renderMonth(currentDate.month)}
+        {this.renderMonth(this.props.selectedDate)}
       </div>
     );
   }
 }
 
-class Calendar extends React.Component {
+interface CalendarState {
+  selectedDate: FullDate;
+}
+
+interface CalendarProps {
+  currentDate: Date;
+}
+
+class Calendar extends React.Component<CalendarProps, CalendarState> {
+  constructor(props: CalendarProps) {
+    super(props);
+    this.state = {selectedDate: new FullDate(props.currentDate)}
+  }
+
   render() {
     return (
       <div className="calendar">
@@ -113,7 +74,7 @@ class Calendar extends React.Component {
           <MonthPicker/>
         </div>
         <div className="monthly-calendar">
-          <MonthCalendar/>
+          <MonthCalendar selectedDate={this.state.selectedDate} selectDay={(selectedDate) => {this.setState({selectedDate})}}/>
         </div>
       </div>
     );
