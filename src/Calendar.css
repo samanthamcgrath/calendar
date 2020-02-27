@@ -1,3 +1,35 @@
+button {
+    display: inline-block;
+    border: none;
+    padding: 1rem 2rem;
+    margin: 0;
+    text-decoration: none;
+    background: #0069ed;
+    color: #ffffff;
+    font-family: sans-serif;
+    font-size: 1rem;
+    cursor: pointer;
+    text-align: center;
+    transition: background 250ms ease-in-out, 
+                transform 150ms ease;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+button:hover,
+button:focus {
+    background: #0053ba;
+}
+
+button:focus {
+    outline: 1px solid #fff;
+    outline-offset: -4px;
+}
+
+button:active {
+    transform: scale(0.99);
+}
+
 .calendar {
     display: flex;
     flex-direction: column;
@@ -8,7 +40,7 @@
     display: flex;
 }
 
-.month-picker, .year-picker {
+.month-picker, .year-picker, .month-navigation {
     float: left;
     width: 100%;
     display: flex;
@@ -16,10 +48,14 @@
 }
 
 .month-picker {
-    background-color: peru;
+    background-color: rgb(107, 135, 219);
 }
 
 .year-picker {
+    background-color: royalblue;
+}
+
+.month-navigation {
     background-color: royalblue;
 }
 
@@ -43,10 +79,13 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
+    font-family: sans-serif;
+    font-size: 1rem;
 }
 
 .day-names div {
     flex: 0 0 12%;
     padding: 5px;
-    background-color: palegoldenrod;
+    background-color: rgb(236, 232, 183);
+    text-align: center;
 }
