@@ -55,11 +55,17 @@ button:active {
     background-color: royalblue;
 }
 
+.current-year, .current-month {
+    width: 100%;
+}
+
 .month-navigation {
     background-color: royalblue;
 }
 
-
+.prev-month, .next-month {
+    width: 50%;
+}
 
 .days {
     display: flex;

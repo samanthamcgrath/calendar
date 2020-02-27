@@ -101,8 +101,8 @@ class MonthNavigation extends React.Component<MonthNavigationProps> {
     let startNextMonth = currentMonth.getRelativeMonth(1).getFirstDayOfMonth();
     return (
       <div>
-        <button onClick={() => {this.props.navigateMonth(startPrevMonth)}}>Prev</button>
-        <button onClick={() => {this.props.navigateMonth(startNextMonth)}}>Next</button>
+        <button className="prev-month" onClick={() => {this.props.navigateMonth(startPrevMonth)}}>Prev</button>
+        <button className="next-month" onClick={() => {this.props.navigateMonth(startNextMonth)}}>Next</button>
       </div>
     );
   }
