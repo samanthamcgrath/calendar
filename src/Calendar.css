@@ -59,9 +59,7 @@ button:active {
     background-color: royalblue;
 }
 
-.current-year, .current-month {
-    padding: 10px;
-}
+
 
 .days {
     display: flex;

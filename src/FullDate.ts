@@ -1,6 +1,28 @@
-const monthNames = ["January","February","March","April","May","June","July",
-                    "August","September","October","November","December"];
-export const dayNames = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+
+export enum Month {
+  January = 1,
+  February,
+  March,
+  April,
+  May,
+  June,
+  July,
+  August,
+  September,
+  October,
+  November,
+  December,
+}
+
+export enum Day {
+  Mon = 1,
+  Tue,
+  Wed,
+  Thu,
+  Fri,
+  Sat,
+  Sun,
+}
 
 class Year {
   number: number;
@@ -10,67 +32,63 @@ class Year {
   }
 }
 
-export class Month {
-  index: number;
+export class MonthYear {
+  month: Month;
   year: Year;
 
-  constructor(month: number, year: Year) {
-    this.index = month;
+  constructor(month: Month, year: Year) {
+    this.month = month;
     this.year = year;
   }
 
   getMonthName() {
-    return monthNames[this.index-1];
+    return Month[this.month];
   }
 
   numberOfDaysInMonth() {
-    const daysInMonth = new Date(this.year.number, this.index, 0).getDate();
+    const daysInMonth = new Date(this.year.number, this.month - 1, 0).getDate();
     return daysInMonth;
   }
 
   *getDaysInMonth(start: number, end: number) {
     for (let i = start; i <= end; i++) {
-      let day = new FullDate(i, this.index, this.year.number);
+      let day = new FullDate(i, this.month, this.year.number);
       yield day;
     }
   }
 
-  getRelativeMonth(offset: number): Month {
+  getRelativeMonth(offset: number): MonthYear {
     let newMonth;
 
     if(offset === 1) { //next month
-      if(this.index === 12) {
+      if(this.month === 12) {
         // if December then year increments as well as month
-        newMonth = new Month(1, new Year(this.year.number + 1));
+        newMonth = new MonthYear(1, new Year(this.year.number + 1));
       } else {
-        newMonth = new Month(this.index + 1, new Year(this.year.number));
+        newMonth = new MonthYear(this.month + 1, new Year(this.year.number));
       }
     } else {
-      if(this.index === 1) { //prev month
+      if(this.month === 1) { //prev month
         // if January then year decrements as well as month
-        newMonth = new Month(12, new Year(this.year.number - 1));
+        newMonth = new MonthYear(12, new Year(this.year.number - 1));
       } else {
-        newMonth = new Month(this.index - 1, new Year(this.year.number));
+        newMonth = new MonthYear(this.month - 1, new Year(this.year.number));
       }
     }
     return newMonth;
   }
 
-  getFirstDayOfMonth() {
-    let firstDayOfMonth = new Date(this.year.number,this.index-1,1).getDay();
-    console.log("first day of month " + (firstDayOfMonth));
 
-    // I want Sun to be last day of the week, not first
-    if(firstDayOfMonth === 0) {
-      firstDayOfMonth = 7;
-    }
+  getFirstDayOfMonth() {
+    let firstDayOfMonth = new FullDate(new Date(this.year.number,this.month-1,1));
+    console.log("first day of month " + (firstDayOfMonth));
     return firstDayOfMonth; 
   }
 }
 
 export class FullDate {
   day: number;
-  month: Month;
+  monthYear: MonthYear;
   year: Year;
 
   constructor(...args: any[]) {
@@ -78,15 +96,31 @@ export class FullDate {
       if(args[0] instanceof Date) {
         this.day = args[0].getDate();
         this.year = new Year(args[0].getFullYear());
-        this.month = new Month(args[0].getMonth()+1,this.year);
+        this.monthYear = new MonthYear(args[0].getMonth()+1,this.year);
       } else {
         throw new Error("argument is not of type Date");
       }
     } else {
       this.day = args[0];
       this.year = new Year(args[2]);
-      this.month = new Month(args[1],this.year);
+      this.monthYear = new MonthYear(args[1],this.year);
     }
   }
+
+  getDayOfTheWeek() {
+    let dayOfWeek = new Date(this.year.number, this.monthYear.month-1, this.day).getDay();
+    // I want Sun to be last day of the week, not first
+    if(dayOfWeek === 0) {
+      dayOfWeek = 7;
+    }
+    return dayOfWeek;
+  }
+
+  isSameDay(otherDay: FullDate) {
+    return (this.day===otherDay.day 
+      && this.monthYear.month===otherDay.monthYear.month 
+      && this.year.number===otherDay.year.number);
+  }
+
 }
 
