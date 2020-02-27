@@ -62,9 +62,9 @@ class MonthCalendar extends React.Component<MonthCalendarProps> {
     let nextMonth = date.month.getRelativeMonth(1);
 
     return (
-      Array.from(prevMonth.getDaysInMonth(prevMonth.numberOfDaysInMonth() - daysBeforeMonth + 1, prevMonth.numberOfDaysInMonth()), d => this.renderDay(d,date.day===d.day))
-      .concat(Array.from(date.month.getDaysInMonth(1, date.month.numberOfDaysInMonth()), d => this.renderDay(d,date.day===d.day)))
-      .concat(Array.from(nextMonth.getDaysInMonth(1, 7 - daysAfterMonth), d => this.renderDay(d,date.day===d.day)))
+      Array.from(prevMonth.getDaysInMonth(prevMonth.numberOfDaysInMonth() - daysBeforeMonth + 1, prevMonth.numberOfDaysInMonth()), d => this.renderDay(d,(date.day===d.day && date.month.index===d.month.index)))
+      .concat(Array.from(date.month.getDaysInMonth(1, date.month.numberOfDaysInMonth()), d => this.renderDay(d,(date.day===d.day && date.month.index===d.month.index))))
+      .concat(Array.from(nextMonth.getDaysInMonth(1, 7 - daysAfterMonth), d => this.renderDay(d,(date.day===d.day && date.month.index===d.month.index))))
     );
   }
 
