@@ -57,9 +57,14 @@ export class Month {
   }
 
   getFirstDayOfMonth() {
-    let firstDayOfMonth = new Date(this.year.number,this.index-1,1);
-    console.log("first day of month " + (firstDayOfMonth.getDay()));
-    return firstDayOfMonth.getDay(); 
+    let firstDayOfMonth = new Date(this.year.number,this.index-1,1).getDay();
+    console.log("first day of month " + (firstDayOfMonth));
+
+    // I want Sun to be last day of the week, not first
+    if(firstDayOfMonth === 0) {
+      firstDayOfMonth = 7;
+    }
+    return firstDayOfMonth; 
   }
 }
 
