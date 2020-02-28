@@ -9,20 +9,21 @@ interface MonthPickerProps {
 
 class MonthPicker extends React.Component<MonthPickerProps> {
   renderMonthButton(month: MonthYear) {
-    return <button>{month.getMonthName()}</button>;
+    return <button className="month-button" key={month.getMonthName()}>{month.getMonthName()}</button>;
   }
 
   renderMonths() {
-    let monthButtons = [];
+    let currentYear = this.props.selectedDate.year;
 
-    return this.renderMonthButton(this.props.selectedDate.monthYear);
+    
+    return Array.from(currentYear.getMonthYears(1, 12), month => this.renderMonthButton(month));
   }
 
   render() {
     return(
       <div>
-        <div>Select A Month</div>
-        <div>{this.renderMonths()}</div>
+        <div className="select-a-month">Select A Month</div>
+        <div className="months">{this.renderMonths()}</div>
       </div>
     );
   }

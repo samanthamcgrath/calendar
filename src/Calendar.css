@@ -1,3 +1,8 @@
+body {
+    font-family: sans-serif;
+    font-size: 1rem;
+}
+
 button {
     display: inline-block;
     border: none;
@@ -58,6 +63,16 @@ button:active {
 
 .year-picker {
     background-color: royalblue;
+}
+
+.months {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.months .month-button {
+    width: 33%;
+    background-color: lightblue;
 }
 
 .current-year, .current-month {

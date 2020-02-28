@@ -30,6 +30,13 @@ class Year {
   constructor(number: number) {
     this.number = number;
   }
+
+  *getMonthYears(start: number, end: number) {
+    for (let i = start; i <= end; i++) {
+      let month = new MonthYear(i, new Year(this.number));
+      yield month;
+    }
+  }
 }
 
 export class MonthYear {
@@ -46,7 +53,6 @@ export class MonthYear {
   }
 
   numberOfDaysInMonth() {
-    // get last day in previous month
     const daysInMonth = new Date(this.year.number, this.month, 0).getDate();
     console.log(this.month, daysInMonth);
     return daysInMonth;
@@ -64,7 +70,6 @@ export class MonthYear {
 
     let newMonthIndex = this.month + offset;
     let newYearIndex = this.year.number;
-    //console.log("New month index:" + newMonthIndex + " New year index: " + newYearIndex);
 
     if(newMonthIndex > 12) {
       newMonthIndex = newMonthIndex - 12;
@@ -80,8 +85,6 @@ export class MonthYear {
 
   getFirstDayOfMonth() {
     let firstDayOfMonth = new FullDate(new Date(this.year.number,this.month-1,1));
-    //console.log("first day of month: ");
-    //console.log(firstDayOfMonth);
     return firstDayOfMonth; 
   }
 }
@@ -109,8 +112,7 @@ export class FullDate {
 
   getDayOfTheWeek() {
     let dayOfWeek = new Date(this.year.number, this.monthYear.month-1, this.day).getDay();
-    // I want Sun to be last day of the week, not first
-    // console.log("day of week: " + dayOfWeek);
+
     if(dayOfWeek === 0) {
       dayOfWeek = 7;
     }
