@@ -46,7 +46,9 @@ export class MonthYear {
   }
 
   numberOfDaysInMonth() {
-    const daysInMonth = new Date(this.year.number, this.month - 1, 0).getDate();
+    // get last day in previous month
+    const daysInMonth = new Date(this.year.number, this.month, 0).getDate();
+    console.log(this.month, daysInMonth);
     return daysInMonth;
   }
 
@@ -60,28 +62,26 @@ export class MonthYear {
   getRelativeMonth(offset: number): MonthYear {
     let newMonth;
 
-    if(offset === 1) { //next month
-      if(this.month === 12) {
-        // if December then year increments as well as month
-        newMonth = new MonthYear(1, new Year(this.year.number + 1));
-      } else {
-        newMonth = new MonthYear(this.month + 1, new Year(this.year.number));
-      }
-    } else {
-      if(this.month === 1) { //prev month
-        // if January then year decrements as well as month
-        newMonth = new MonthYear(12, new Year(this.year.number - 1));
-      } else {
-        newMonth = new MonthYear(this.month - 1, new Year(this.year.number));
-      }
+    let newMonthIndex = this.month + offset;
+    let newYearIndex = this.year.number;
+    //console.log("New month index:" + newMonthIndex + " New year index: " + newYearIndex);
+
+    if(newMonthIndex > 12) {
+      newMonthIndex = newMonthIndex - 12;
+      newYearIndex++;
+    } else if(newMonthIndex < 1) {
+      newMonthIndex = newMonthIndex + 12;
+      newYearIndex--;
     }
-    return newMonth;
+
+    return new MonthYear(newMonthIndex, new Year(newYearIndex));
   }
 
 
   getFirstDayOfMonth() {
     let firstDayOfMonth = new FullDate(new Date(this.year.number,this.month-1,1));
-    console.log("first day of month " + (firstDayOfMonth));
+    //console.log("first day of month: ");
+    //console.log(firstDayOfMonth);
     return firstDayOfMonth; 
   }
 }
@@ -110,6 +110,7 @@ export class FullDate {
   getDayOfTheWeek() {
     let dayOfWeek = new Date(this.year.number, this.monthYear.month-1, this.day).getDay();
     // I want Sun to be last day of the week, not first
+    // console.log("day of week: " + dayOfWeek);
     if(dayOfWeek === 0) {
       dayOfWeek = 7;
     }

@@ -38,13 +38,18 @@ button:active {
 
 .date-picker {
     display: flex;
+    flex-wrap: wrap;
 }
 
-.month-picker, .year-picker, .month-navigation {
+.month-tab, .year-tab, .month-navigation {
     float: left;
-    width: 100%;
+    width: 33%;
     display: flex;
     justify-content: space-around;
+}
+
+.month-picker, .year-picker {
+    width: 100%;
 }
 
 .month-picker {
@@ -76,6 +81,12 @@ button:active {
 .day-button {
     flex: 0 0 14%;
     padding: 5px;
+    background-color: lightgrey;
+}
+
+.day-button.current-month {
+    flex: 0 0 14%;
+    padding: 5px;
     background-color: lightblue;
 }
 
@@ -88,7 +99,7 @@ button:active {
 }
 
 .day-names div {
-    flex: 0 0 12%;
+    flex: 0 0 11%;
     padding: 5px;
     background-color: rgb(236, 232, 183);
     text-align: center;
