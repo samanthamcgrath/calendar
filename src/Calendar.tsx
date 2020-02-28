@@ -13,7 +13,7 @@ class MonthPicker extends React.Component<MonthPickerProps> {
   }
 
   renderMonths() {
-    let currentYear = this.props.selectedDate.year;
+    let currentYear = this.props.selectedDate.year();
 
     
     return Array.from(currentYear.getMonthYears(1, 12), month => this.renderMonthButton(month));
@@ -58,7 +58,7 @@ class DayButton extends React.Component<DayButtonProps> {
     }
     return(
       <button className={`day-button ${this.props.currentMonth}`} style={selected} onClick={() => {this.props.selectDay(this.props.date)}}>
-        {this.props.date.day}
+        {this.props.date.day()}
       </button>
     );
   }
@@ -76,12 +76,12 @@ class MonthCalendar extends React.Component<MonthCalendarProps> {
       monthClass = "current-month";
     }
     return <DayButton date={date} selected={selected} selectDay={this.props.selectDay} 
-            key={date.day+date.monthYear.getMonthName()} currentMonth={monthClass} />
+            key={date.day()+date.monthYear().getMonthName()} currentMonth={monthClass} />
   }
 
   renderMonth(date: FullDate): JSX.Element[] {
     console.log(date);
-    let month = date.monthYear;
+    let month = date.monthYear();
     let daysInMonth = month.numberOfDaysInMonth();
     let daysBeforeMonth = month.getFirstDayOfMonth().getDayOfTheWeek() - 1;
     let daysAfterMonth = (daysInMonth + daysBeforeMonth)%7;
@@ -126,7 +126,7 @@ interface MonthNavigationProps {
 
 class MonthNavigation extends React.Component<MonthNavigationProps> {
   render() {
-    let currentMonth = this.props.selectedDate.monthYear;
+    let currentMonth = this.props.selectedDate.monthYear();
     let startPrevMonth = currentMonth.getRelativeMonth(-1).getFirstDayOfMonth();
     let startNextMonth = currentMonth.getRelativeMonth(1).getFirstDayOfMonth();
     return (
@@ -153,9 +153,9 @@ class Calendar extends React.Component<CalendarProps, CalendarState> {
   }
 
   render() {
-    console.log("State: " + this.state.selectedDate.day
-     + " " + this.state.selectedDate.monthYear.month
-     + " " + this.state.selectedDate.year.number);
+    console.log("State: " + this.state.selectedDate.day()
+     + " " + this.state.selectedDate.monthYear().month()
+     + " " + this.state.selectedDate.year().number());
     return (
       <div className="calendar">
         <h1>Calendar</h1>
@@ -165,10 +165,10 @@ class Calendar extends React.Component<CalendarProps, CalendarState> {
               <MonthNavigation selectedDate={this.state.selectedDate} navigateMonth={(selectedDate) => {this.setState({selectedDate})}}/>
             </div>
             <div className="month-tab">
-              <button className="current-month">{this.state.selectedDate.monthYear.getMonthName()}</button>
+              <button className="current-month">{this.state.selectedDate.monthYear().getMonthName()}</button>
             </div>
             <div className="year-tab">
-              <button className="current-year">{this.state.selectedDate.year.number}</button>
+              <button className="current-year">{this.state.selectedDate.year().number()}</button>
             </div>
           </div>
           <div className="month-picker">
