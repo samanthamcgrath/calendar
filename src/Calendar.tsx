@@ -4,12 +4,14 @@ import {FullDate, Month, MonthYear, Year, Day} from './FullDate';
 
 
 interface MonthPickerProps {
-  selectedDate: FullDate
+  selectedDate: FullDate,
+  selectDay: (day: FullDate) => void
 }
 
 class MonthPicker extends React.Component<MonthPickerProps> {
   renderMonthButton(month: MonthYear) {
-    return <button className="month-button" key={month.getMonthName()}>{month.getMonthName()}</button>;
+    let newDate = new FullDate(1, month.month(), month.year().number());
+    return <button className="month-button" key={month.getMonthName()} onClick={() => {this.props.selectDay(newDate)}}>{month.getMonthName()}</button>;
   }
 
   renderMonths() {
@@ -28,12 +30,14 @@ class MonthPicker extends React.Component<MonthPickerProps> {
 }
 
 interface YearPickerProps {
-  selectedDate: FullDate
+  selectedDate: FullDate,
+  selectDay: (day: FullDate) => void
 }
 
 class YearPicker extends React.Component<YearPickerProps> {
   renderYearButton(year: Year) {
-    return <button className="year-button" key={year.number()}>{year.number()}</button>;
+    let newDate = new FullDate(1, this.props.selectedDate.monthYear().month(), year.number());
+    return <button className="year-button" key={year.number()} onClick={() => {this.props.selectDay(newDate)}}>{year.number()}</button>;
   }
 
   renderYears() {
@@ -187,10 +191,10 @@ class Calendar extends React.Component<CalendarProps, CalendarState> {
             </div>
           </div>
           <div className="month-picker">
-            <MonthPicker selectedDate={this.state.selectedDate}/>
+            <MonthPicker selectedDate={this.state.selectedDate} selectDay={(selectedDate) => {this.setState({selectedDate})}}/>
           </div>
           <div className="year-picker">
-            <YearPicker selectedDate={this.state.selectedDate}/>
+            <YearPicker selectedDate={this.state.selectedDate} selectDay={(selectedDate) => {this.setState({selectedDate})}}/>
           </div>
         </div>
         <div className="monthly-calendar">
