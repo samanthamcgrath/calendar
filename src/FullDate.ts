@@ -24,7 +24,7 @@ export enum Day {
   Sun,
 }
 
-class Year {
+export class Year {
   private readonly _number: number;
 
   constructor(number: number) {

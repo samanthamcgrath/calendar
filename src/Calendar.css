@@ -6,7 +6,7 @@ body {
 button {
     display: inline-block;
     border: none;
-    padding: 1rem 2rem;
+    padding: 1rem 1rem;
     margin: 0;
     text-decoration: none;
     background: #0069ed;
@@ -46,6 +46,10 @@ button:active {
     flex-wrap: wrap;
 }
 
+.date-picker .header {
+    width: 100%;
+}
+
 .month-tab, .year-tab, .month-navigation {
     float: left;
     width: 33%;
@@ -65,14 +69,28 @@ button:active {
     background-color: royalblue;
 }
 
-.months {
-    display: flex;
-    flex-wrap: wrap;
+.select-a-month, .select-a-year {
+    padding: 5px;
+    text-align: center;
+    background-color: rgb(236, 232, 183);
 }
 
-.months .month-button {
+.months, .years {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.months .month-button, .years .year-button {
     width: 33%;
     background-color: lightblue;
+}
+
+.month-button:hover,
+.month-button:focus,
+.year-button:hover,
+.year-button:focus {
+    background: #0053ba;
 }
 
 .current-year, .current-month {
@@ -83,8 +101,14 @@ button:active {
     background-color: royalblue;
 }
 
+.nav-buttons {
+    display: flex;
+    width: 100%;
+}
+
 .prev-month, .next-month {
-    width: 50%;
+    float: left;
+    width: 49%;
 }
 
 .days {
@@ -105,6 +129,11 @@ button:active {
     background-color: lightblue;
 }
 
+.day-button.current-month:hover,
+.day-button.current-month:focus {
+    background: #0053ba;
+}
+
 .day-names {
     display: flex;
     flex-wrap: wrap;
@@ -118,4 +147,8 @@ button:active {
     padding: 5px;
     background-color: rgb(236, 232, 183);
     text-align: center;
+}
+
+.hide-table {
+    display: none;
 }

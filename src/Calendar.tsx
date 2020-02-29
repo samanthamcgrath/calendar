@@ -1,6 +1,6 @@
 import React from 'react';
 import './Calendar.css';
-import {FullDate, Month, MonthYear, Day} from './FullDate';
+import {FullDate, Month, MonthYear, Year, Day} from './FullDate';
 
 
 interface MonthPickerProps {
@@ -14,8 +14,6 @@ class MonthPicker extends React.Component<MonthPickerProps> {
 
   renderMonths() {
     let currentYear = this.props.selectedDate.year();
-
-    
     return Array.from(currentYear.getMonthYears(1, 12), month => this.renderMonthButton(month));
   }
 
@@ -34,10 +32,27 @@ interface YearPickerProps {
 }
 
 class YearPicker extends React.Component<YearPickerProps> {
+  renderYearButton(year: Year) {
+    return <button className="year-button" key={year.number()}>{year.number()}</button>;
+  }
+
+  renderYears() {
+    let firstYear = this.props.selectedDate.year().number() - 4;
+    let lastYear = this.props.selectedDate.year().number() + 4;
+    let yearButtons = [];
+
+    for(let i = firstYear; i <= lastYear; i++) {
+      yearButtons.push(this.renderYearButton(new Year(i)));
+    }
+
+    return yearButtons;
+  }
+
   render() {
     return(
       <div>
-        <div>Select A Year</div>
+      <div className="select-a-year">Select A Year</div>
+        <div className="years">{this.renderYears()}</div>
       </div>
     );
   }
@@ -130,7 +145,7 @@ class MonthNavigation extends React.Component<MonthNavigationProps> {
     let startPrevMonth = currentMonth.getRelativeMonth(-1).getFirstDayOfMonth();
     let startNextMonth = currentMonth.getRelativeMonth(1).getFirstDayOfMonth();
     return (
-      <div>
+      <div className="nav-buttons">
         <button className="prev-month" onClick={() => {this.props.navigateMonth(startPrevMonth)}}>Prev</button>
         <button className="next-month" onClick={() => {this.props.navigateMonth(startNextMonth)}}>Next</button>
       </div>
