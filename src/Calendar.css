@@ -149,6 +149,6 @@ button:active {
     text-align: center;
 }
 
-.hide-table {
+.not-active {
     display: none;
 }

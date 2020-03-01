@@ -157,8 +157,15 @@ class MonthNavigation extends React.Component<MonthNavigationProps> {
   }
 }
 
+enum ActiveView {
+  MonthCal,
+  MonthPicker,
+  YearPicker
+}
+
 interface CalendarState {
-  selectedDate: FullDate;
+  selectedDate: FullDate,
+  activeView: ActiveView
 }
 
 interface CalendarProps {
@@ -168,36 +175,53 @@ interface CalendarProps {
 class Calendar extends React.Component<CalendarProps, CalendarState> {
   constructor(props: CalendarProps) {
     super(props);
-    this.state = {selectedDate: new FullDate(props.currentDate)}
+    this.state = {selectedDate: new FullDate(props.currentDate), activeView: ActiveView.MonthCal}
+  }
+
+  setView(view: ActiveView) {
+    if(view === this.state.activeView) {
+      this.setState({activeView: ActiveView.MonthCal});
+    } else {
+      this.setState({activeView: view});
+    }
+  }
+
+  displayView(view: ActiveView) {
+    if(view === this.state.activeView) {
+      return "active";
+    } else {
+      return "not-active";
+    }
   }
 
   render() {
-    console.log("State: " + this.state.selectedDate.day()
+    console.log("Date State: " + this.state.selectedDate.day()
      + " " + this.state.selectedDate.monthYear().month()
      + " " + this.state.selectedDate.year().number());
+    console.log("Active view: " + this.state.activeView);
     return (
       <div className="calendar">
         <h1>Calendar</h1>
         <div className="date-picker">
           <div className="header">
             <div className="month-navigation">
-              <MonthNavigation selectedDate={this.state.selectedDate} navigateMonth={(selectedDate) => {this.setState({selectedDate})}}/>
+              <MonthNavigation selectedDate={this.state.selectedDate} navigateMonth={(selectedDate) => {this.setState({selectedDate: selectedDate, activeView: ActiveView.MonthCal})}}/>
             </div>
             <div className="month-tab">
-              <button className="current-month">{this.state.selectedDate.monthYear().getMonthName()}</button>
+              <button className="current-month" onClick={() => {this.setView(ActiveView.MonthPicker)}}>{this.state.selectedDate.monthYear().getMonthName()}</button>
             </div>
             <div className="year-tab">
-              <button className="current-year">{this.state.selectedDate.year().number()}</button>
+              <button className="current-year" onClick={() => {this.setView(ActiveView.YearPicker)}}>{this.state.selectedDate.year().number()}</button>
             </div>
           </div>
-          <div className="month-picker">
-            <MonthPicker selectedDate={this.state.selectedDate} selectDay={(selectedDate) => {this.setState({selectedDate})}}/>
+          <div className={`month-picker ${this.displayView(ActiveView.MonthPicker)}`}>
+            <MonthPicker selectedDate={this.state.selectedDate} selectDay={(selectedDate) => {this.setState({selectedDate: selectedDate, activeView: ActiveView.MonthCal})}}/>
           </div>
-          <div className="year-picker">
-            <YearPicker selectedDate={this.state.selectedDate} selectDay={(selectedDate) => {this.setState({selectedDate})}}/>
+          <div className={`year-picker ${this.displayView(ActiveView.YearPicker)}`}>
+            <YearPicker selectedDate={this.state.selectedDate} selectDay={(selectedDate) => {this.setState({selectedDate: selectedDate, activeView: ActiveView.MonthCal})}}/>
           </div>
         </div>
-        <div className="monthly-calendar">
+        <div className={`day-button ${this.displayView(ActiveView.MonthCal)}`}>
           <MonthCalendar selectedDate={this.state.selectedDate} selectDay={(selectedDate) => {this.setState({selectedDate})}}/>
         </div>
       </div>
