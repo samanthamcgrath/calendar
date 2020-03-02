@@ -129,6 +129,14 @@ button:active {
     background-color: lightblue;
 }
 
+.day-button.selected {
+    background-color: rgb(130, 161, 172);
+}
+
+.day-button.today {
+    text-decoration: underline;
+}
+
 .day-button.current-month:hover,
 .day-button.current-month:focus {
     background: #0053ba;

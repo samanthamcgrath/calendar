@@ -66,17 +66,18 @@ interface DayButtonProps {
   date: FullDate, 
   selected: boolean, 
   selectDay: (day: FullDate) => void,
-  currentMonth: string
+  currentMonth: string,
+  today: string
 }
 
 class DayButton extends React.Component<DayButtonProps> {
   render() {
-    let selected: any = {};
+    let selected = "";
     if(this.props.selected) {
-      selected.backgroundColor = "rgb(130, 161, 172)";
+      selected = "selected";
     }
     return(
-      <button className={`day-button ${this.props.currentMonth}`} style={selected} onClick={() => {this.props.selectDay(this.props.date)}}>
+      <button className={`day-button ${this.props.currentMonth} ${this.props.today} ${selected}`} onClick={() => {this.props.selectDay(this.props.date)}}>
         {this.props.date.day()}
       </button>
     );
@@ -91,11 +92,15 @@ interface MonthCalendarProps {
 class MonthCalendar extends React.Component<MonthCalendarProps> {
   renderDay(date: FullDate, selected: boolean, currentMonth: boolean): JSX.Element {
     let monthClass = "";
+    let todayClass = "";
     if(currentMonth) {
       monthClass = "current-month";
     }
+    if(date.isSameDay(new FullDate(new Date()))) {
+      todayClass = "today";
+    }
     return <DayButton date={date} selected={selected} selectDay={this.props.selectDay} 
-            key={date.day()+date.monthYear().getMonthName()} currentMonth={monthClass} />
+            key={date.day()+date.monthYear().getMonthName()} currentMonth={monthClass} today={todayClass} />
   }
 
   renderMonth(date: FullDate): JSX.Element[] {
