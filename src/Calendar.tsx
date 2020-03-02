@@ -99,7 +99,6 @@ class MonthCalendar extends React.Component<MonthCalendarProps> {
   }
 
   renderMonth(date: FullDate): JSX.Element[] {
-    console.log(date);
     let month = date.monthYear();
     let daysInMonth = month.numberOfDaysInMonth();
     let daysBeforeMonth = month.getFirstDayOfMonth().getDayOfTheWeek() - 1;
@@ -107,8 +106,6 @@ class MonthCalendar extends React.Component<MonthCalendarProps> {
     if(daysAfterMonth === 0) {
       daysAfterMonth = 7;
     }
-    // console.log("days before: " + daysBeforeMonth);
-    // console.log("days after: " + daysAfterMonth);
 
     let prevMonth = month.getRelativeMonth(-1);
     let nextMonth = month.getRelativeMonth(1);

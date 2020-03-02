@@ -66,7 +66,6 @@ export class MonthYear {
 
   numberOfDaysInMonth() {
     const daysInMonth = new Date(this._year.number(), this._month, 0).getDate();
-    console.log(this._month, daysInMonth);
     return daysInMonth;
   }
 
